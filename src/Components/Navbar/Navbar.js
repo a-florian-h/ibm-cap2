@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
 
 const Navbar = ({ handleClick }) => {
@@ -6,7 +7,7 @@ const Navbar = ({ handleClick }) => {
     <div>
       <nav>
         <div className="nav__logo">
-          <a href="/">
+          <Link to="/">
             StayHealthy{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +26,7 @@ const Navbar = ({ handleClick }) => {
               </g>
             </svg>
             {/* <img src=".../img/icon_doctor_.png" alt="stethoscope logo"></img> */}
-          </a>
+          </Link>
           <span>.</span>
         </div>
         <div className="nav__icon" onClick={handleClick}>
@@ -33,20 +34,20 @@ const Navbar = ({ handleClick }) => {
         </div>
         <ul className="nav__links active">
           <li className="link">
-            <a href="../Landing_Page/LandingPage.html">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li className="link">
-            <a href="#">Appointments</a>
+            <Link to="/appointments">Appointments</Link>
           </li>
           <li className="link">
-            <a href="../Sign_Up/Sign_Up.html">
+            <Link to="/sign_up">
               <button className="btn1">Sign Up</button>
-            </a>
+            </Link>
           </li>
           <li className="link">
-            <a href="../Login/Login.html">
+            <Link to="/login">
               <button className="btn1">Login</button>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
