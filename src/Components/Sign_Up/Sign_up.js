@@ -9,12 +9,10 @@ const Sign_Up = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showerr, setShowerr] = useState("");
-
   const navigate = useNavigate();
 
   const register = async (e) => {
     e.preventDefault();
-
     // API Call
     const response = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
@@ -30,7 +28,6 @@ const Sign_Up = () => {
     });
 
     const json = await response.json();
-
     if (json.authtoken) {
       sessionStorage.setItem("auth-token", json.authtoken);
       sessionStorage.setItem("name", name);
@@ -56,6 +53,50 @@ const Sign_Up = () => {
       <div className="signup-grid">
         <div className="signup-form">
           <form method="POST" onSubmit={register}>
+            {/* //apply logic here for other elements such as name, phone and
+            password to take user information */}
+            <div className="form-group">
+              <label htmlFor="role">Choose Role:</label>
+              <select
+                id="role"
+                name="role"
+                required
+                className="form-control"
+                placeholder="Choose role"
+                aria-describedby="helpId"
+              >
+                <option value="client">Client</option>
+                <option value="doctor">Doctor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                required
+                className="form-control"
+                placeholder="Enter your name"
+                aria-describedby="helpId"
+              />
+            </div>
+            <div class="form-group">
+              <label htmlFor="phone">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                required
+                className="form-control"
+                placeholder="Enter your phone number"
+                aria-describedby="helpId"
+                // pattern="\d{10}"
+                title="Phone number must be exactly 10 digits long"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -74,8 +115,33 @@ const Sign_Up = () => {
                 </div>
               )}
             </div>
-            //apply logic here for other elements such as name, phone and
-            password to take user information
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                className="form-control"
+                placeholder="Enter your password"
+                aria-describedby="helpId"
+              />
+            </div>
+            <div className="btn-group">
+              <button
+                type="submit"
+                className="btn btn-primary mb-2 mr-1 waves-effect waves-light"
+              >
+                Submit
+              </button>
+              <button
+                type="reset"
+                className="btn btn-danger mb-2 waves-effect waves-light"
+              >
+                Reset
+              </button>
+            </div>
           </form>
         </div>
       </div>
