@@ -13,6 +13,7 @@ const Sign_Up = () => {
 
   const register = async (e) => {
     e.preventDefault();
+    alert('register');
     // API Call
     const response = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
@@ -53,8 +54,7 @@ const Sign_Up = () => {
       <div className="signup-grid">
         <div className="signup-form">
           <form method="POST" onSubmit={register}>
-            {/* //apply logic here for other elements such as name, phone and
-            password to take user information */}
+
             <div className="form-group">
               <label htmlFor="role">Choose Role:</label>
               <select
