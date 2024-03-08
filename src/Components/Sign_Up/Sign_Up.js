@@ -13,9 +13,18 @@ const Sign_Up = () => {
 
   const register = async (e) => {
     e.preventDefault();
-    alert('register');
-    // API Call
-    const response = await fetch(`${API_URL}/api/auth/register`, {
+
+    alert(
+      JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+      })
+    );
+
+    // API Call // no need for extra "/" after ${API_URL}
+    const response = await fetch(`${API_URL}api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,10 +48,28 @@ const Sign_Up = () => {
       navigate("/"); //on directing to home page you need to give logic to change login and signup buttons with name of the user and logout button where you have implemented Navbar functionality
       window.location.reload();
     } else {
-      if (json.errors) {
-        for (const error of json.errors) {
-          setShowerr(error.msg);
-        }
+      // check the network response for the JSON. it is received as error not errors
+      // use error.msg for the error message
+
+      // if (json.error) {
+      //     const errorMessages = json.error.map(error => error.msg).join(' ');
+      //     setShowerr(errorMessages);
+      //     } else {
+      //     setShowerr(json.error);
+      //     }
+
+      //   if (json.error) {
+      //     for (const error of json.error) {
+      //       setShowerr(error.msg);
+      //     }
+      //   } else {
+      //     setShowerr(json.error);
+      //   }
+      // error from the database is not an array but a simple string catch either cases .
+
+      if (Array.isArray(json.error)) {
+        const errorMessages = json.error.map((error) => error.msg).join(" ");
+        setShowerr(errorMessages);
       } else {
         setShowerr(json.error);
       }
@@ -54,7 +81,6 @@ const Sign_Up = () => {
       <div className="signup-grid">
         <div className="signup-form">
           <form method="POST" onSubmit={register}>
-
             <div className="form-group">
               <label htmlFor="role">Choose Role:</label>
               <select
@@ -72,6 +98,8 @@ const Sign_Up = () => {
             <div class="form-group">
               <label htmlFor="name">Name</label>
               <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 type="text"
                 name="name"
                 id="name"
@@ -80,6 +108,19 @@ const Sign_Up = () => {
                 placeholder="Enter your name"
                 aria-describedby="helpId"
               />
+
+              {/* {showerr && (
+<div className="err" style={{ color: "red" }}>
+    {showerr}
+</div>
+)} */}
+
+              {/*               
+// {showerr && (
+// <div className="err" style={{ color: "red" }}>
+//     {showerr.msg}
+// </div>
+// )} */}
             </div>
             <div class="form-group">
               <label htmlFor="phone">Phone</label>
@@ -96,6 +137,11 @@ const Sign_Up = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
+              {/* {showerr && (
+<div className="err" style={{ color: "red" }}>
+{showerr}
+</div>
+)} */}
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
@@ -109,16 +155,24 @@ const Sign_Up = () => {
                 placeholder="Enter your email"
                 aria-describedby="helpId"
               />
-              {showerr && (
-                <div className="err" style={{ color: "red" }}>
-                  {showerr}
-                </div>
-              )}
+              {/* {showerr && (
+<div className="err" style={{ color: "red" }}>
+    {showerr}
+</div>
+)} */}
+
+              {/* {showerr && (
+<div className="err" style={{ color: "red" }}>
+{showerr}
+</div>
+)} */}
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 name="password"
                 id="password"
@@ -128,6 +182,11 @@ const Sign_Up = () => {
                 aria-describedby="helpId"
               />
             </div>
+            {showerr && (
+              <div className="err" style={{ color: "red" }}>
+                {showerr}
+              </div>
+            )}
             <div className="btn-group">
               <button
                 type="submit"
