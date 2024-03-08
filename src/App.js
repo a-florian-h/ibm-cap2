@@ -36,7 +36,7 @@ function App() {
                 speciality={doctor.speciality}
                 experience={doctor.experience}
                 ratings={doctor.ratings}
-                // Add profilePic if available
+                profilePic={doctor.profilePic}
                 />
                 ))}
                 </>
