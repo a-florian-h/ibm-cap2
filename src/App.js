@@ -5,8 +5,9 @@ import Navbar from "./Components/Navbar/Navbar";
 import Layout from "./Components/Landing_Page/Landing_Page";
 import Sign_Up from "./Components/Sign_Up/Sign_Up";
 import Login from "./Components/Login/Login";
-import InstantConsultation from './Components/InstantConsultationBooking/InstantConsultation'; 
+import InstantConsultation from "./Components/InstantConsultationBooking/InstantConsultation"; 
 import FindDoctorSearch from "./Components/FindDoctorSearch/FindDoctorSearch";
+import BookingConsultation from "./Components/BookingConsultation/BookingConsultation";
 import DoctorCard from "./Components/DoctorCard/DoctorCard";
 import { doctors } from "./Components/DoctorCard/doctorsdata";
 
@@ -24,8 +25,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/instant-consultation" element={<InstantConsultation />} />
           <Route path="/finddoctorsearch" element={<FindDoctorSearch />} />
+          <Route path="/bookingconsultation" element={<BookingConsultation />} />
           {/* <Route path="/doctorcard" element={<DoctorCard />} /> */}
-            <Route
+          {/* here a path was created to demonstrate the doctorcard component. The code is commented out as the component is now called by FindDoctorSearch */}
+            {/* <Route
                 path="/doctorcard"
                 element={
                 <>
@@ -41,7 +44,7 @@ function App() {
                 ))}
                 </>
                 }
-            />
+            /> */}
           
         </Routes>
       </BrowserRouter>

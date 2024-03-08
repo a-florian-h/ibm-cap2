@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './FindDoctorSearch.css';
 import { useNavigate, Navigate } from 'react-router-dom';
-
+import DoctorCard from "../DoctorCard/DoctorCard";
+import { doctors } from "../DoctorCard/doctorsdata";
 
 const initSpeciality = [
     'Dentist', 'Gynecologist/obstetrician', 'General Physician', 'Dermatologist', 'Ear-nose-throat (ent) Specialist', 'Homeopath', 'Ayurveda'
@@ -15,7 +16,8 @@ const FindDoctorSearch = () => {
     const handleDoctorSelect = (speciality) => {
         setSearchDoctor(speciality);
         setDoctorResultHidden(true);
-        navigate(`/instant-consultation?speciality=${speciality}`);
+        // navigate(`/instant-consultation?speciality=${speciality}`);
+        navigate(`/finddoctorsearch?speciality=${speciality}`);
         window.location.reload();
     }
     return (
@@ -41,6 +43,19 @@ const FindDoctorSearch = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* map through available doctors as defined in doctorsdata */}
+
+                {doctors.map((doctor, index) => (
+                <DoctorCard 
+                key={index}
+                name={doctor.name}
+                speciality={doctor.speciality}
+                experience={doctor.experience}
+                ratings={doctor.ratings}
+                profilePic={doctor.profilePic}
+                />
+                ))}
             </center>
         </div>
     )
