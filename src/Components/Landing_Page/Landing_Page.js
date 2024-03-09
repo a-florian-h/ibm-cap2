@@ -8,9 +8,11 @@ const Landing_Page = () => {
       <div>
         <div data-aos="fade-up" className="flex-hero">
           <h1>
-            Your Health
+          <span className="text-gradient">Y</span>
+            our Health
             <br />
-            <span className="text-gradient">Our Responsibility</span>
+            Y
+            <span className="text-gradient">our Responsibility</span>
           </h1>
           <div class="blob-cont">
             <div class="blue blob"></div>
@@ -19,8 +21,8 @@ const Landing_Page = () => {
             <div class="blue1 blob"></div>
           </div>
           <h4>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque at
-            quae ducimus. Suscipit omnis quibusdam non cum rem voluptatem!
+            This is a fantastic webstite just for you and for everyone. Use it to book appointments with your prefered doctors. <br />
+            Signup, signin, book, it's that easy. 
           </h4>
           <a href="#services">
             <button class="button">Get Started</button>

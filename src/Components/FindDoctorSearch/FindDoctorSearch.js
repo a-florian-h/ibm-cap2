@@ -3,6 +3,7 @@ import './FindDoctorSearch.css';
 import { useNavigate, Navigate } from 'react-router-dom';
 import DoctorCard from "../DoctorCard/DoctorCard";
 import { doctors } from "../DoctorCard/doctorsdata";
+import BookingConsultation from "../BookingConsultation/BookingConsultation"
 
 const initSpeciality = [
     'Dentist', 'Gynecologist/obstetrician', 'General Physician', 'Dermatologist', 'Ear-nose-throat (ent) Specialist', 'Homeopath', 'Ayurveda'
@@ -13,13 +14,40 @@ const FindDoctorSearch = () => {
     const [searchDoctor, setSearchDoctor] = useState('');
     const [specialities, setSpecialities] = useState(initSpeciality);
     const navigate = useNavigate();
-    const handleDoctorSelect = (speciality) => {
+    // const handleDoctorSelect = (speciality) => {
+    //     setSearchDoctor(speciality);
+    //     setDoctorResultHidden(true);
+    //     // navigate(`/instant-consultation?speciality=${speciality}`);
+    //     // navigate(`/finddoctorsearch?speciality=${speciality}`);
+    //     navigate(`/bookingconsultation?speciality=${speciality}`);
+    //     window.location.reload();
+    // }
+
+    const handleDoctorSelect = (speciality, name) => {
         setSearchDoctor(speciality);
         setDoctorResultHidden(true);
-        // navigate(`/instant-consultation?speciality=${speciality}`);
-        navigate(`/finddoctorsearch?speciality=${speciality}`);
+      
+        let url = '/bookingconsultation';
+        if (speciality) {
+          url += `?speciality=${speciality}`;
+        }
+        if (name) {
+          url += speciality ? `&name=${name}` : `?name=${name}`;
+        }
+      
+        console.log('Navigating to URL:', url);
+        navigate(url);
         window.location.reload();
-    }
+      };
+
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            // alert('keydown');
+          handleDoctorSelect(null , searchDoctor);
+        }
+      };
+
     return (
         <div className='finddoctor'>
             <center>
@@ -29,8 +57,20 @@ const FindDoctorSearch = () => {
                     <div className="doctor-search-box">
                     {/* <p>Perform a search to see the results.</p> */}
 
-                        <input type="text" className="search-doctor-input-box" placeholder="Search doctors, clinics, hospitals, etc." onFocus={() => setDoctorResultHidden(false)} onBlur={() => setDoctorResultHidden(true)} value={searchDoctor} onChange={(e) => setSearchDoctor(e.target.value)} />
+                        {/* <input type="text" className="search-doctor-input-box" placeholder="Search doctors, clinics, hospitals, etc." onFocus={() => setDoctorResultHidden(false)} onBlur={() => setDoctorResultHidden(true)} value={searchDoctor} onChange={(e) => setSearchDoctor(e.target.value)} /> */}
                         
+                        <input 
+                            type="text" 
+                            className="search-doctor-input-box" 
+                            placeholder="Search doctors, by speciality or name" 
+                            onFocus={() => setDoctorResultHidden(false)} 
+                            onBlur={() => setDoctorResultHidden(true)} 
+                            value={searchDoctor} 
+                            onChange={(e) => setSearchDoctor(e.target.value)} 
+                            onKeyDown={handleKeyDown}
+                        />   
+
+
                         <div className="findiconimg"><img className='findIcon' src={process.env.PUBLIC_URL + '/images/search.svg'} alt=""/></div>
                         <div className="search-doctor-input-results" hidden={doctorResultHidden}>
                             {
@@ -46,7 +86,7 @@ const FindDoctorSearch = () => {
 
                 {/* map through available doctors as defined in doctorsdata */}
 
-                {doctors.map((doctor, index) => (
+                {/* {doctors.map((doctor, index) => (
                 <DoctorCard 
                 key={index}
                 name={doctor.name}
@@ -55,7 +95,8 @@ const FindDoctorSearch = () => {
                 ratings={doctor.ratings}
                 profilePic={doctor.profilePic}
                 />
-                ))}
+                ))} */}
+
             </center>
         </div>
     )

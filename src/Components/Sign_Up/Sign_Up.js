@@ -151,6 +151,7 @@ const Sign_Up = () => {
                 type="email"
                 name="email"
                 id="email"
+                required
                 className="form-control"
                 placeholder="Enter your email"
                 aria-describedby="helpId"

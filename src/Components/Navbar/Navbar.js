@@ -41,6 +41,7 @@ const Navbar = () => {
     if (storedemail) {
       setIsLoggedIn(true);
       setUsername(storedemail);
+      setEmail(storedemail);
     }
   }, []);
   return (
