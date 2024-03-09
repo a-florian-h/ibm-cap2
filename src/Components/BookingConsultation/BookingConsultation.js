@@ -4,57 +4,84 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import FindDoctorSearch from '../FindDoctorSearch/FindDoctorSearch';
 import DoctorCard from '../DoctorCard/DoctorCard';
 
-const InstantConsultation = () => {
+const BookingConsultation = () => {
     const [searchParams] = useSearchParams();
     const [doctors, setDoctors] = useState([]);
     const [filteredDoctors, setFilteredDoctors] = useState([]);
     const [isSearched, setIsSearched] = useState(false);
-    
+    const navigate = useNavigate();
+
+    // const getDoctorsDetails = () => {
+    //     fetch('https://api.npoint.io/9a5543d36f1460da2f63')
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         if (searchParams.get('speciality')) {
+    //             // window.reload()
+    //             const filtered = data.filter(doctor => doctor.speciality.toLowerCase() === searchParams.get('speciality').toLowerCase());
+
+    //             setFilteredDoctors(filtered);
+                
+    //             setIsSearched(true);
+    //             window.reload()
+    //         } else {
+    //             setFilteredDoctors([]);
+    //             setIsSearched(false);
+    //         }
+    //         setDoctors(data);
+    //         // alert(
+    //         //     JSON.stringify({
+    //         //   data
+    //         //     })
+    //         //   );
+    //     })
+    //     .catch(err => console.log(err));
+    // }
+
     const getDoctorsDetails = () => {
         fetch('https://api.npoint.io/9a5543d36f1460da2f63')
-        .then(res => res.json())
-        .then(data => {
-            if (searchParams.get('speciality')) {
-                // window.reload()
-                const filtered = data.filter(doctor => doctor.speciality.toLowerCase() === searchParams.get('speciality').toLowerCase());
-
-                setFilteredDoctors(filtered);
-                
-                setIsSearched(true);
-                window.reload()
-            } else {
-                setFilteredDoctors([]);
-                setIsSearched(false);
+          .then(res => res.json())
+          .then(data => {
+            let filtered = data;
+      
+            const specialityParam = searchParams.get('speciality');
+            const nameParam = searchParams.get('name');
+      
+            if (specialityParam) {
+              filtered = filtered.filter(doctor => doctor.speciality.toLowerCase() === specialityParam.toLowerCase());
             }
-            setDoctors(data);
-            // alert(
-            //     JSON.stringify({
-            //   data
-            //     })
-            //   );
-        })
-        .catch(err => console.log(err));
-    }
-    const handleSearch = (searchText) => {
-
-        if (searchText === '') {
-            setFilteredDoctors([]);
-            setIsSearched(false);
-            } else {
-                
-            const filtered = doctors.filter(
-                (doctor) =>
-                // 
-                doctor.speciality.toLowerCase().includes(searchText.toLowerCase())
-                
-            );
-                
+      
+            if (nameParam) {
+                filtered = filtered.filter(doctor => doctor.name.toLowerCase().includes(nameParam.toLowerCase()));
+              }
+      
             setFilteredDoctors(filtered);
-            setIsSearched(true);
-            window.location.reload()
-        }
-    };
-    const navigate = useNavigate();
+            setIsSearched(!!specialityParam || !!nameParam);
+            setDoctors(data);
+          })
+          .catch(err => console.log(err));
+      }
+
+
+
+      const handleSearch = (searchText) => {
+  if (searchText === '') {
+    setFilteredDoctors([]);
+    setIsSearched(false);
+  } else {
+    const filtered = doctors.filter(doctor => 
+      doctor.speciality.toLowerCase().includes(searchText.toLowerCase()) ||
+      doctor.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    setFilteredDoctors(filtered);
+    setIsSearched(true);
+
+    // Update the URL with the new search parameters
+    navigate(`/bookingconsultation?speciality=${searchText}&name=${searchText}`);
+  }
+};
+
+
     useEffect(() => {
         getDoctorsDetails();
         // const authtoken = sessionStorage.getItem("auth-token");
@@ -87,4 +114,4 @@ const InstantConsultation = () => {
     )
 }
 
-export default InstantConsultation
+export default BookingConsultation
