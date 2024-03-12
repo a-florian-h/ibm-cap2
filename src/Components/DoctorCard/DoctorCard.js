@@ -11,18 +11,30 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
   const { appointments, setAppointments } = useAppointments();
 
+
+  useEffect(() => {
+    const doctorAppointments = appointments.filter(appointment => appointment.doctorName === name);
+    const hasAppointment = doctorAppointments.length > 0;
+    // setShowModal(hasAppointment);
+  }, [appointments, name]);
+
+
   const handleBooking = () => {
     setShowModal(true);
   };
 
   const handleCancel = (appointmentId) => {
-    const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
-    setAppointments(updatedAppointments);
+    const doctorAppointments = appointments.filter(appointment => appointment.doctorName === name);
+  
+    const updatedAppointments = doctorAppointments.filter((appointment) => appointment.id !== appointmentId);
+  
+    setAppointments(prevAppointments => prevAppointments.filter(appointment => appointment.id !== appointmentId));
+  
     if (updatedAppointments.length > 0) {
-        localStorage.setItem(name, JSON.stringify(updatedAppointments));
-      } else {
-        localStorage.removeItem(name);
-      }
+      localStorage.setItem(name, JSON.stringify(updatedAppointments));
+    } else {
+      localStorage.removeItem(name);
+    }
   };
 
 

@@ -6,7 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Navbar from '../Navbar/Navbar';
 import "./Notification.css";
 
-const Notification = ({ children }) => {
+const Notification = ({ children, name }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const { appointments, setAppointments } = useAppointments();
@@ -29,13 +29,29 @@ const Notification = ({ children }) => {
     }
   }, []);
 
+  const handleCardClick = (index) => {
+    const appointment = appointments[index];
+    if (appointment) {
+      const doctorAppointments = appointments.filter(app => app.doctorName === appointment.doctorName);
+      const hasAppointment = doctorAppointments.length > 0;
+  
+      if (hasAppointment) {
+        // Do something if there is an appointment
+      } else {
+        // Do something else if there is no appointment
+      }
+  
+      console.log(`Slide at index ${index} was clicked`);
+    }
+  };
+
   return (
     <div>
       <Navbar></Navbar>
       {children}
       {isLoggedIn && (
         <div className="carousel-container">
-        <Carousel showThumbs={false} showStatus={false}>
+        <Carousel showThumbs={false} showStatus={false} onClickItem={handleCardClick}>
           {appointments.map((appointment, index) => (
             <div key={index} className="appointment-card">
               <div className="appointment-card__content">
@@ -53,10 +69,10 @@ const Notification = ({ children }) => {
                   <strong>Phone Number:</strong> {appointment.phoneNumber}
                 </p>
                 <p className="appointment-card__message">
-                  <strong>Date of Appointment:</strong> {appointment.date}
+                  <strong>Date of Appointment:</strong> {appointment.selectedDate}
                 </p>
                 <p className="appointment-card__message">
-                  <strong>Time Slot:</strong> {appointment.slot}
+                  <strong>Time Slot:</strong> {appointment.selectedSlot}
                 </p>
               </div>
             </div>
