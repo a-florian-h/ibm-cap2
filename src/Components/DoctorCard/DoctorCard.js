@@ -4,11 +4,12 @@ import 'reactjs-popup/dist/index.css';
 import './DoctorCard.css';
 import AppointmentForm from '../AppointmentForm/AppointmentForm'
 import { v4 as uuidv4 } from 'uuid';
+import { useAppointments } from '../../AppointmentsContext';
 // import  profilePic from './icon_doctor_.png';
 
 const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
-  const [appointments, setAppointments] = useState([]);
+  const { appointments, setAppointments } = useAppointments();
 
   const handleBooking = () => {
     setShowModal(true);
@@ -17,21 +18,36 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const handleCancel = (appointmentId) => {
     const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
     setAppointments(updatedAppointments);
+    if (updatedAppointments.length > 0) {
+        localStorage.setItem(name, JSON.stringify(updatedAppointments));
+      } else {
+        localStorage.removeItem(name);
+      }
   };
 
 
   const handleFormSubmit = (appointmentData) => {
     const newAppointment = {
       id: uuidv4(),
+      doctorName: name,
+      speciality: speciality,
       ...appointmentData,
     };
-    const updatedAppointments = [...appointments, newAppointment];
-    setAppointments(updatedAppointments);
+    const storedAppointments = JSON.parse(localStorage.getItem(name)) || [];
+    const updatedAppointments = [...storedAppointments, newAppointment];
+    setAppointments(prevAppointments => [...prevAppointments, newAppointment]);
+    localStorage.setItem(name, JSON.stringify(updatedAppointments));
     setShowModal(false);
   };
 
+// Filter appointments for the current doctor
+const doctorAppointments = appointments.filter(appointment => appointment.doctorName === name);
+
+// Check if there are any appointments for the current doctor
+const hasAppointment = doctorAppointments.length > 0;
+
+
   return (
-    // <div className="doctor-card-container" style={{ marginTop: '150px' }}>
     <div className="doctor-card-container" style={{ marginTop: '50px' }}>
       <div className="doctor-card-details-container">
         <div className="doctor-card-profile-image-container">
@@ -55,13 +71,31 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
         </div> */}
       </div>
 
-      {/* adding booking button functionality */}
+      {/* adding booking button functionality
       <div className="doctor-card-options-container">
        <Popup
           style={{ backgroundColor: '#FFFFFF' }}
           trigger={
             <button className={`book-appointment-btn ${appointments.length > 0 ? 'cancel-appointment' : ''}`}>
               {appointments.length > 0 ? (
+                <div>Cancel Appointment</div>
+              ) : (
+                <div>Book Appointment</div>
+              )}
+              <div>No Booking Fee</div>
+            </button>
+          }
+          modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+        > */}
+      {/* adding booking button functionality */}
+      <div className="doctor-card-options-container">
+       <Popup
+          style={{ backgroundColor: '#FFFFFF' }}
+          trigger={
+            <button className={`book-appointment-btn ${hasAppointment ? 'cancel-appointment' : ''}`}>
+              {hasAppointment ? (
                 <div>Cancel Appointment</div>
               ) : (
                 <div>Book Appointment</div>
@@ -89,10 +123,10 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
                 </div>
               </div>
 
-              {appointments.length > 0 ? (
+              {doctorAppointments.length > 0 ? (
                 <>
                   <h3 style={{ textAlign: 'center' }}>Appointment Booked!</h3>
-                  {appointments.map((appointment) => (
+                  {doctorAppointments.map((appointment) => (
                     <div className="bookedInfo" key={appointment.id}>
                       <p>Name: {appointment.name}</p>
                       <p>Phone Number: {appointment.phoneNumber}</p>
@@ -102,6 +136,7 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
                       <button onClick={() => handleCancel(appointment.id)}>Cancel Appointment</button>
                     </div>
                   ))}
+               
                 </>
               ) : (
                 <AppointmentForm doctorName={name} doctorSpeciality={speciality} onSubmit={handleFormSubmit} />

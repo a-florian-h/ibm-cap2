@@ -8,8 +8,10 @@ import Login from "./Components/Login/Login";
 import InstantConsultation from "./Components/InstantConsultationBooking/InstantConsultation"; 
 import FindDoctorSearch from "./Components/FindDoctorSearch/FindDoctorSearch";
 import BookingConsultation from "./Components/BookingConsultation/BookingConsultation";
+import Notification from "./Components/Notification/Notification";
 import DoctorCard from "./Components/DoctorCard/DoctorCard";
 import { doctors } from "./Components/DoctorCard/doctorsdata";
+import { AppointmentsProvider } from './AppointmentsContext';
 
 function App() {
 
@@ -18,35 +20,18 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Layout />} />
-          <Route path="/sign_up" element={<Sign_Up />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/instant-consultation" element={<InstantConsultation />} />
-          <Route path="/finddoctorsearch" element={<FindDoctorSearch />} />
-          <Route path="/bookingconsultation" element={<BookingConsultation />} />
-          {/* <Route path="/doctorcard" element={<DoctorCard />} /> */}
-          {/* here a path was created to demonstrate the doctorcard component. The code is commented out as the component is now called by FindDoctorSearch */}
-            {/* <Route
-                path="/doctorcard"
-                element={
-                <>
-                {doctors.map((doctor, index) => (
-                <DoctorCard 
-                key={index}
-                name={doctor.name}
-                speciality={doctor.speciality}
-                experience={doctor.experience}
-                ratings={doctor.ratings}
-                profilePic={doctor.profilePic}
-                />
-                ))}
-                </>
-                }
-            /> */}
-          
-        </Routes>
+      <AppointmentsProvider>
+        <Notification >
+            <Routes>
+                <Route path="/" element={<Layout />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/sign_up" element={<Sign_Up />} />
+                {/* <Route path="/instant-consultation" element={<InstantConsultation />} /> */}
+                {/* <Route path="/finddoctorsearch" element={<FindDoctorSearch />} /> */}
+                <Route path="/bookingconsultation" element={<BookingConsultation />} />         
+            </Routes>
+        </Notification>
+        </AppointmentsProvider>
       </BrowserRouter>
     </div>
   );
