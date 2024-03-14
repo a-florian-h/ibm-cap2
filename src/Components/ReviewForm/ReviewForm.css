@@ -1,0 +1,39 @@
+.review-form {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  
+  .review-form table {
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .review-form table thead {
+    background-color: #f2f2f2; 
+    padding: 10px 20px; 
+  }
+
+  .review-form table td {
+    padding: 10px 40px; 
+  }
+
+  .review-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  .star-ratings {
+    display: flex;
+    justify-content: center;
+  }

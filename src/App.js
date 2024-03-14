@@ -12,6 +12,7 @@ import Notification from "./Components/Notification/Notification";
 import DoctorCard from "./Components/DoctorCard/DoctorCard";
 import { doctors } from "./Components/DoctorCard/doctorsdata";
 import { AppointmentsProvider } from './AppointmentsContext';
+import ReviewForm from "./Components/ReviewForm/ReviewForm";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Notification >
             <Routes>
                 <Route path="/" element={<Layout />} />
+                <Route path="/reviewform" element={<ReviewForm />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/sign_up" element={<Sign_Up />} />
                 {/* <Route path="/instant-consultation" element={<InstantConsultation />} /> */}
