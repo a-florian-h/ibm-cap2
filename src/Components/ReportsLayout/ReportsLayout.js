@@ -17,7 +17,7 @@ const ReportsLayout = (props) => {
   const handleDownloadReport = (appointmentId) => {
     let a = document.createElement('a');
 
-    a.href = '/patient_report.pdf'; // Assuming the PDF file is named 'report.pdf' and is located in the public directory
+    a.href = '/patient_report.pdf'; 
     a.download = '/patient_report.pdf';
 
     document.body.appendChild(a);
@@ -25,6 +25,12 @@ const ReportsLayout = (props) => {
     a.click();
 
     document.body.removeChild(a);
+
+{/* <a target='_blank' href='Patient_report.pdf' className="report-link" rel="noreferrer">
+ View Report
+</a> */}
+
+
   };
 
   return (
