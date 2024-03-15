@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GiveReviews from "../GiveReviews/GiveReviews";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import "./ReviewForm.css";
@@ -8,6 +8,7 @@ const ReviewForm = (props) => {
   const [currentAppointmentId, setCurrentAppointmentId] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [reviews, setReviews] = useState({});
+  const modalRef = useRef();
 
   useEffect(() => {
     // Function to handle 'storage' events
@@ -32,6 +33,19 @@ const ReviewForm = (props) => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowForm(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
 
   const handleReviewClick = (appointmentId) => {
     setShowForm(true);
@@ -75,7 +89,11 @@ const ReviewForm = (props) => {
           })}
         </tbody>
       </table>
-      {showForm && <GiveReviews appointmentId={currentAppointmentId} setReviews={setReviews} />}
+      {showForm && (
+        <div ref={modalRef}>
+          <GiveReviews appointmentId={currentAppointmentId} setReviews={setReviews} />
+        </div>
+      )}
     </div>
   );
 };
