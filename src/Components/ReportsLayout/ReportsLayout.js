@@ -11,11 +11,20 @@ const ReportsLayout = (props) => {
   }, []);
 
   const handleViewReport = (appointmentId) => {
-    // Logic to view report
+    window.open('/patient_report.pdf', '_blank');
   };
 
   const handleDownloadReport = (appointmentId) => {
-    // Logic to download report
+    let a = document.createElement('a');
+
+    a.href = '/patient_report.pdf'; // Assuming the PDF file is named 'report.pdf' and is located in the public directory
+    a.download = '/patient_report.pdf';
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
   };
 
   return (
