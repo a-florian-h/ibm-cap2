@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -10,7 +9,10 @@ const Navbar = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+ 
+ 
   const handleClick = () => setClick(!click);
+
 
   const handleLogout = () => {
     sessionStorage.removeItem("auth-token");
@@ -73,12 +75,22 @@ const Navbar = () => {
         </li>
         {isLoggedIn ? (
           <>
-            <li className="link">{`Welcome, ${username.split("@")[0]}`}</li>
-            <li className="link">
-              <button className="btn2" onClick={handleLogout}>
-                Logout
-              </button>
-            </li>
+<li className="link welcome-user" onClick={handleDropdown}>
+  {`Welcome, ${username.split("@")[0]}`}
+  {showDropdown && (
+    <div className="dropdown-menu">
+  <ul>
+    <li><Link to="/profile">Your Profile</Link></li>
+    <li><Link to="/reports">Reports</Link></li>
+  </ul>
+</div>
+  )}
+</li>
+<li className="link">
+  <button className="btn2" onClick={handleLogout}>
+    Logout
+  </button>
+</li>
           </>
         ) : (
           <>

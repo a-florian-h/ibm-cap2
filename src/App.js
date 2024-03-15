@@ -13,6 +13,8 @@ import DoctorCard from "./Components/DoctorCard/DoctorCard";
 import { doctors } from "./Components/DoctorCard/doctorsdata";
 import { AppointmentsProvider } from './AppointmentsContext';
 import ReviewForm from "./Components/ReviewForm/ReviewForm";
+import ProfileCard from "./Components/ProfileCard/ProfileCard";
+import ReportsLayout from "./Components/ReportsLayout/ReportsLayout";
 
 function App() {
 
@@ -28,6 +30,9 @@ function App() {
                 <Route path="/reviewform" element={<ReviewForm />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/sign_up" element={<Sign_Up />} />
+                <Route path="/profile" element={<ProfileCard />} />
+                <Route path="/reports" element={<ReportsLayout />} />
+
                 {/* <Route path="/instant-consultation" element={<InstantConsultation />} /> */}
                 {/* <Route path="/finddoctorsearch" element={<FindDoctorSearch />} /> */}
                 <Route path="/bookingconsultation" element={<BookingConsultation />} />         
