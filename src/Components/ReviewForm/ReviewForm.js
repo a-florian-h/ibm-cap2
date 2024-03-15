@@ -90,10 +90,8 @@ const ReviewForm = (props) => {
         </tbody>
       </table>
       {showForm && (
-        <div ref={modalRef}>
-          <GiveReviews appointmentId={currentAppointmentId} setReviews={setReviews} />
-        </div>
-      )}
+  <GiveReviews appointmentId={currentAppointmentId} setReviews={setReviews} setShowForm={setShowForm} />
+)}
     </div>
   );
 };

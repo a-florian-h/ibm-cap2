@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Popup from 'reactjs-popup';
 import StarRatings from 'react-star-ratings';
 import "./GiveReviews.css";
 import { v4 as uuidv4 } from 'uuid';
-
 
 function GiveReviews(props) {
   const [showModal, setShowModal] = useState(true);
@@ -14,41 +13,46 @@ function GiveReviews(props) {
     review: "",
   });
   const [rating, setRating] = useState(0);
+  const modalRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowModal(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     setSubmittedMessage(formData);
-//     setFormData("");
-//     if (formData.name && formData.review && rating > 0) {
-//       setShowWarning(false);
-//     } else {
-//       setShowWarning(true);
-//     }
-//   };
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (formData.name && formData.review && rating > 0) {
-    // Store the data in local storage
-    const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
-    const newReview = { ...formData, rating, id: props.appointmentId };
-    storedReviews[newReview.id] = newReview;
-    localStorage.setItem('reviews', JSON.stringify(storedReviews));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.name && formData.review && rating > 0) {
+      // Store the data in local storage
+      const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
+      const newReview = { ...formData, rating, id: props.appointmentId };
+      storedReviews[newReview.id] = newReview;
+      localStorage.setItem('reviews', JSON.stringify(storedReviews));
 
-    // Update the reviews state in the ReviewForm component
-    props.setReviews(storedReviews);
+      // Update the reviews state in the ReviewForm component
+      props.setReviews(storedReviews);
 
-    // Reset the form
-    setFormData({ name: "", review: "", rating: 0 });
-    setShowWarning(false);
-    setShowModal(false); // Close the form
-  } else {
-    setShowWarning(true);
-  }
-};
+      // Reset the form
+      setFormData({ name: "", review: "", rating: 0 });
+      setShowWarning(false);
+      props.setShowForm(false);
+    //   setShowModal(false);
+    } else {
+      setShowWarning(true);
+    }
+  };
 
   return (
     <div>
@@ -57,7 +61,21 @@ const handleSubmit = (e) => {
         onClose={() => setShowModal(false)}
         modal
       >
-        <form onSubmit={handleSubmit}>
+{/* <Popup
+  open={showModal}
+  onClose={() => setShowModal(false)}
+  closeOnDocumentClick={false}
+  modal
+> */}
+{/* <Popup
+  open={showModal}
+  onClose={() => setShowModal(false)}
+  closeOnDocumentClick={true}
+  on={["click"]}
+  modal
+> */}
+
+        <form ref={modalRef} onSubmit={handleSubmit}>
           <h2>Give Your Feedback</h2>
           {showWarning && (
             <p className="warning">Please fill out all fields.</p>
@@ -99,7 +117,6 @@ const handleSubmit = (e) => {
       {submittedMessage && (
         <div>
           <h3>Submitted Message:</h3>
-          {/* <p>{submittedMessage}</p> */}
           <p>Name: {submittedMessage.name}, Review: {submittedMessage.review}</p>
         </div>
       )}
