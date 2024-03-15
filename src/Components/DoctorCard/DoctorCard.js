@@ -22,19 +22,14 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const handleBooking = () => {
     setShowModal(true);
   };
-
+  
   const handleCancel = (appointmentId) => {
-    const doctorAppointments = appointments.filter(appointment => appointment.doctorName === name);
-  
-    const updatedAppointments = doctorAppointments.filter((appointment) => appointment.id !== appointmentId);
-  
-    setAppointments(prevAppointments => prevAppointments.filter(appointment => appointment.id !== appointmentId));
-  
-    if (updatedAppointments.length > 0) {
-      localStorage.setItem(name, JSON.stringify(updatedAppointments));
-    } else {
-      localStorage.removeItem(name);
-    }
+    const storedAppointments = JSON.parse(localStorage.getItem('appointments')) || {};
+    delete storedAppointments[appointmentId];
+    setAppointments((prevAppointments) =>
+      prevAppointments.filter((appointment) => appointment.id !== appointmentId)
+    );
+    localStorage.setItem('appointments', JSON.stringify(storedAppointments));
   };
 
 
@@ -45,10 +40,13 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
       speciality: speciality,
       ...appointmentData,
     };
-    const storedAppointments = JSON.parse(localStorage.getItem(name)) || [];
-    const updatedAppointments = [...storedAppointments, newAppointment];
-    setAppointments(prevAppointments => [...prevAppointments, newAppointment]);
-    localStorage.setItem(name, JSON.stringify(updatedAppointments));
+    const storedAppointments = JSON.parse(localStorage.getItem('appointments')) || {};
+    storedAppointments[newAppointment.id] = newAppointment;
+    setAppointments((prevAppointments) => [
+      ...prevAppointments,
+      newAppointment,
+    ]);
+    localStorage.setItem('appointments', JSON.stringify(storedAppointments));
     setShowModal(false);
   };
 

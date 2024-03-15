@@ -12,12 +12,8 @@ const Notification = ({ children, name }) => {
   const { appointments, setAppointments } = useAppointments();
 
   useEffect(() => {
-    const allAppointments = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const storedAppointments = JSON.parse(localStorage.getItem(key));
-      allAppointments.push(...storedAppointments);
-    }
+    const storedAppointments = JSON.parse(localStorage.getItem('appointments')) || {};
+    const allAppointments = Object.values(storedAppointments);
     setAppointments(allAppointments);
   }, []);
 
@@ -53,7 +49,7 @@ const Notification = ({ children, name }) => {
         <div className="carousel-container">
         <Carousel showThumbs={false} showStatus={false} onClickItem={handleCardClick}>
           {appointments.map((appointment, index) => (
-            <div key={index} className="appointment-card">
+            <div key={index} className="appointment-card text-gradient">
               <div className="appointment-card__content">
                 <h3 className="appointment-card__title">Appointment Details</h3>
                 <p className="appointment-card__message">

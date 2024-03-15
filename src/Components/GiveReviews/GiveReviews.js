@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Popup from 'reactjs-popup';
 import StarRatings from 'react-star-ratings';
 import "./GiveReviews.css";
+import { v4 as uuidv4 } from 'uuid';
 
-function GiveReviews() {
+
+function GiveReviews(props) {
   const [showModal, setShowModal] = useState(true);
   const [submittedMessage, setSubmittedMessage] = useState("");
   const [showWarning, setShowWarning] = useState(false);
@@ -14,7 +16,7 @@ function GiveReviews() {
   const [rating, setRating] = useState(0);
 
   const handleChange = (e) => {
-    setFormData(e.target.value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
 //   const handleSubmit = (e) => {
@@ -27,23 +29,26 @@ function GiveReviews() {
 //       setShowWarning(true);
 //     }
 //   };
-
 const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.name && formData.review && rating > 0) {
-      // Store the data in local storage
-      const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
-      reviews.push({ ...formData, rating });
-      localStorage.setItem('reviews', JSON.stringify(reviews));
-  
-      // Reset the form
-      setFormData({ name: "", review: "", rating: 0 });
-      setShowWarning(false);
-      setShowModal(false); // Close the form
-    } else {
-      setShowWarning(true);
-    }
-  };
+  e.preventDefault();
+  if (formData.name && formData.review && rating > 0) {
+    // Store the data in local storage
+    const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
+    const newReview = { ...formData, rating, id: props.appointmentId };
+    storedReviews[newReview.id] = newReview;
+    localStorage.setItem('reviews', JSON.stringify(storedReviews));
+
+    // Update the reviews state in the ReviewForm component
+    props.setReviews(storedReviews);
+
+    // Reset the form
+    setFormData({ name: "", review: "", rating: 0 });
+    setShowWarning(false);
+    setShowModal(false); // Close the form
+  } else {
+    setShowWarning(true);
+  }
+};
 
   return (
     <div>
